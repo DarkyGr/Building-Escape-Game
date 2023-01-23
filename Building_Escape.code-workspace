@@ -1,0 +1,22 @@
+{
+	"folders": [
+		{
+			"name": "Building_Escape",
+			"path": "."
+		},
+		{
+			"name": "UE4",
+			"path": "E:\\Epic Games\\UE_4.27"
+		}
+	],
+	"settings": {
+		"typescript.tsc.autoDetect": "off",
+		"UEIntellisenseFixes.compiler.path": "C:\\Program Files\\Microsoft Visual Studio\\2022\\Community\\VC\\Tools\\MSVC\\14.34.31933\\bin\\HostX64\\x64\\cl.exe"
+	},
+	"extensions": {
+		"recommendations": [
+			"ms-vscode.cpptools",
+			"ms-dotnettools.csharp"
+		]
+	}
+}
