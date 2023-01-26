@@ -19,8 +19,19 @@ void UWorldPosition::BeginPlay()
 {
 	Super::BeginPlay();
 
-	// FString ObjectName = GetOwner()->GetName();	
-	UE_LOG(LogTemp, Warning, TEXT("The object names is: %s"), *GetOwner()->GetName());	// Name of actor 
+	FString ObjectName = GetOwner()->GetName();		//Set variable for name actor
+	FVector ObjectPosition = GetOwner()->GetActorLocation();
+	UE_LOG(LogTemp, Warning, TEXT("The name actor is: %s"), *ObjectName);	// Name of actor 
+	UE_LOG(LogTemp, Error, TEXT("The location actor is: \nX-> %f \nY-> %f \nZ-> %f"), ObjectPosition.X, ObjectPosition.Y, ObjectPosition.Z);	// Name of actor 
+
+	// ----------- Others options ------------------------------
+
+	// FString ObjectPosition = GetOwner()->GetActorLocation().ToString();
+	// UE_LOG(LogTemp, Warning, TEXT("The name actor is: %s. \nAnd position is: %s"), *ObjectName, *ObjectPosition);	// Name of actor 
+
+	// FString ObjectPosition = GetOwner()->GetActorTransform().GetLocation().ToString();
+	// UE_LOG(LogTemp, Warning, TEXT("The name actor is: %s. \nAnd position is: %s"), *ObjectName, *ObjectPosition);	// Name of actor 
+	
 }
 
 
