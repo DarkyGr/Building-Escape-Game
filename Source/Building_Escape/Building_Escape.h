@@ -4,3 +4,5 @@
 
 #include "CoreMinimal.h"
 
+void BuildingBlank(const FString& Msg);
+
