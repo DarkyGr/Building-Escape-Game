@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "Components/ActorComponent.h"
+#include "Engine/TriggerVolume.h"
 #include "OpenDoor.generated.h"
 
 
@@ -27,10 +28,14 @@ public:
 	private:	
 	float CurrentYaw;
 	float InitialYaw;
-	FRotator OpenDoor;
+	FRotator OpenDoor;	
 
-	// Set property for edit on UE
+	// Set property for edit on UE the Target Yaw
 	UPROPERTY(EditAnywhere)
 	float TargetYaw = 90.f;
+
+	// Set property for edit on UE the Trigger Volume
+	UPROPERTY(EditAnywhere)
+	ATriggerVolume* PressurePlate;
 		
 };
