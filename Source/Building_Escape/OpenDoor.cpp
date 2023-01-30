@@ -22,8 +22,8 @@ void UOpenDoor::BeginPlay()
 
 	// Set values variables
 	InitialYaw = GetOwner()->GetActorRotation().Yaw;	// Actor Yaw
-	CurrentYaw = InitialYaw;		// Set Current Yaw == Actor Yaw
-	TargetYaw = InitialYaw + 90.f;	// Set 90 grades of Target
+	CurrentYaw = InitialYaw;	// Set Current Yaw == Actor Yaw
+	TargetYaw += InitialYaw;	// Set 90 grades of Target
 }
 
 

@@ -24,11 +24,13 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-	private:
-
-	float TargetYaw;
+	private:	
 	float CurrentYaw;
 	float InitialYaw;
 	FRotator OpenDoor;
+
+	// Set property for edit on UE
+	UPROPERTY(EditAnywhere)
+	float TargetYaw = 90.f;
 		
 };
