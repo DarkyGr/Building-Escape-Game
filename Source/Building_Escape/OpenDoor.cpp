@@ -36,7 +36,9 @@ void UOpenDoor::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompon
 	UE_LOG(LogTemp, Warning, TEXT("Yaw is: %f"), GetOwner()->GetActorRotation().Yaw);	// Msg 2
 	
 	// Set actor rotation for animated anywhere
-	CurrentYaw = FMath::Lerp(CurrentYaw, TargetYaw, 0.02f);		// Set animated of actor
+	CurrentYaw = FMath::Lerp(CurrentYaw, TargetYaw, DeltaTime * 0.5f);		// Set animated of actor
+	// Delta Time may affect game performance and item reaction time -> For this reason used DeltaTime * 0.5f
+	
 	FRotator DoorRotation = GetOwner()->GetActorRotation();		// Create and set FRotator with Actor
 	DoorRotation.Yaw = CurrentYaw;		// Set FRotation Yaw of Current Yaw
 	GetOwner()->SetActorRotation(DoorRotation);		// Set Rotation
