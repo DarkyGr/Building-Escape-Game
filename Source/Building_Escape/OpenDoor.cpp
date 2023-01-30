@@ -1,6 +1,7 @@
 // Copyright DarkyGr 2023
 
-
+#include "Engine/World.h"
+#include "GameFramework/PlayerController.h"
 #include "OpenDoor.h"
 #include "GameFramework/Actor.h"
 
@@ -30,6 +31,9 @@ void UOpenDoor::BeginPlay()
 	{
 		UE_LOG(LogTemp, Error, TEXT("%s has open door component on it, but no pressure plate set!"), *GetOwner()->GetName())
 	}
+
+	// Search in the world for the first pawn Player
+	ActorThatOpens = GetWorld()->GetFirstPlayerController()->GetPawn();
 	
 }
 
