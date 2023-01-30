@@ -33,12 +33,23 @@ public:
 	float CurrentYaw;
 	float InitialYaw;
 	FRotator OpenDoor;
-	float DoorLastOpened = 0.f;
-	float DoorCloseDelay = 0.5f;
+	float DoorLastOpened = 0.f;	
 
 	// Set property for edit on UE the Target Yaw
 	UPROPERTY(EditAnywhere)
-	float TargetYaw = 90.f;
+	float OpenAngle = 90.f;
+
+	// Set property for edit on UE the Door Open Speed
+	UPROPERTY(EditAnywhere)
+	float DoorOpenSpeed = 3.f;
+
+	// Set property for edit on UE the Door Close Speed
+	UPROPERTY(EditAnywhere)
+	float DoorCloseSpeed = 0.8f;
+
+	// Set property for edit on UE the Door Close Selay
+	UPROPERTY(EditAnywhere)
+	float DoorCloseDelay = 0.5f;
 
 	// Set property for edit on UE the Trigger Volume
 	UPROPERTY(EditAnywhere)

@@ -24,7 +24,7 @@ void UOpenDoor::BeginPlay()
 	// Set values variables
 	InitialYaw = GetOwner()->GetActorRotation().Yaw;	// Actor Yaw
 	CurrentYaw = InitialYaw;	// Set Current Yaw == Actor Yaw
-	TargetYaw += InitialYaw;	// Set 90 grades of Target
+	OpenAngle += InitialYaw;	// Set 90 grades of Target
 
 	// Check if the pressure plate is not set
 	if (!PressurePlate)
@@ -65,7 +65,7 @@ void UOpenDoor::OpendDoor(float DeltaTime)
 	// UE_LOG(LogTemp, Warning, TEXT("Yaw is: %f"), GetOwner()->GetActorRotation().Yaw);	// Msg 2
 	
 	// Set actor rotation for animated anywhere
-	CurrentYaw = FMath::Lerp(CurrentYaw, TargetYaw, DeltaTime * 0.8f);		// Set animated of actor
+	CurrentYaw = FMath::Lerp(CurrentYaw, OpenAngle, DeltaTime * DoorOpenSpeed);		// Set animated of actor
 	// Delta Time may affect game performance and item reaction time -> For this reason used DeltaTime * 0.5f
 	
 	FRotator DoorRotation = GetOwner()->GetActorRotation();		// Create and set FRotator with Actor
@@ -77,7 +77,7 @@ void UOpenDoor::OpendDoor(float DeltaTime)
 // Function for Close Door
 void UOpenDoor::CloseDoor(float DeltaTime)
 {
-	CurrentYaw = FMath::Lerp(CurrentYaw, InitialYaw, DeltaTime * 2.f);		// Set animated of actor	
+	CurrentYaw = FMath::Lerp(CurrentYaw, InitialYaw, DeltaTime * DoorCloseSpeed);		// Set animated of actor	
 	
 	FRotator DoorRotation = GetOwner()->GetActorRotation();		// Create and set FRotator with Actor
 	DoorRotation.Yaw = CurrentYaw;		// Set FRotation Yaw of Current Yaw
