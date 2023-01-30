@@ -32,7 +32,9 @@ public:
 	private:	
 	float CurrentYaw;
 	float InitialYaw;
-	FRotator OpenDoor;	
+	FRotator OpenDoor;
+	float DoorLastOpened = 0.f;
+	float DoorCloseDelay = 0.5f;
 
 	// Set property for edit on UE the Target Yaw
 	UPROPERTY(EditAnywhere)
