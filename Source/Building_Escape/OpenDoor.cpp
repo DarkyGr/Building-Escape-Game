@@ -30,10 +30,19 @@ void UOpenDoor::BeginPlay()
 // Called every frame
 void UOpenDoor::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
 {
-	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);	
+	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	UE_LOG(LogTemp, Warning, TEXT("%s"), *GetOwner()->GetActorRotation().ToString());	// Msg 1
-	UE_LOG(LogTemp, Warning, TEXT("Yaw is: %f"), GetOwner()->GetActorRotation().Yaw);	// Msg 2
+	if(PressurePlate->IsOverlappingActor(ActorThatOpens)){
+		OpendDoor(DeltaTime);
+	}	
+	
+}
+
+// Function for Open Door
+void UOpenDoor::OpendDoor(float DeltaTime)
+{
+	// UE_LOG(LogTemp, Warning, TEXT("%s"), *GetOwner()->GetActorRotation().ToString());	// Msg 1
+	// UE_LOG(LogTemp, Warning, TEXT("Yaw is: %f"), GetOwner()->GetActorRotation().Yaw);	// Msg 2
 	
 	// Set actor rotation for animated anywhere
 	CurrentYaw = FMath::Lerp(CurrentYaw, TargetYaw, DeltaTime * 1.25f);		// Set animated of actor
@@ -43,4 +52,3 @@ void UOpenDoor::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompon
 	DoorRotation.Yaw = CurrentYaw;		// Set FRotation Yaw of Current Yaw
 	GetOwner()->SetActorRotation(DoorRotation);		// Set Rotation
 }
-

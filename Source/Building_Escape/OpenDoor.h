@@ -25,6 +25,9 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
+	public:
+	void OpendDoor(float DeltaTime);
+
 	private:	
 	float CurrentYaw;
 	float InitialYaw;
@@ -37,5 +40,9 @@ public:
 	// Set property for edit on UE the Trigger Volume
 	UPROPERTY(EditAnywhere)
 	ATriggerVolume* PressurePlate;
+
+	// Set property for edit on UE the Trigger Volume
+	UPROPERTY(EditAnywhere)
+	AActor* ActorThatOpens;
 		
 };
