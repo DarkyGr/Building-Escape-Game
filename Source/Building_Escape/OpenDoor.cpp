@@ -46,7 +46,11 @@ void UOpenDoor::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompon
 	// Check if the actor is stepping on the pressure plate	
 	if(PressurePlate && PressurePlate->IsOverlappingActor(ActorThatOpens)){
 		OpendDoor(DeltaTime);
-	}	
+	}else
+	{
+		CloseDoor(DeltaTime);
+	}
+		
 	
 }
 
@@ -59,6 +63,17 @@ void UOpenDoor::OpendDoor(float DeltaTime)
 	// Set actor rotation for animated anywhere
 	CurrentYaw = FMath::Lerp(CurrentYaw, TargetYaw, DeltaTime * 1.25f);		// Set animated of actor
 	// Delta Time may affect game performance and item reaction time -> For this reason used DeltaTime * 0.5f
+	
+	FRotator DoorRotation = GetOwner()->GetActorRotation();		// Create and set FRotator with Actor
+	DoorRotation.Yaw = CurrentYaw;		// Set FRotation Yaw of Current Yaw
+	GetOwner()->SetActorRotation(DoorRotation);		// Set Rotation
+}
+
+
+// Function for Close Door
+void UOpenDoor::CloseDoor(float DeltaTime)
+{
+	CurrentYaw = FMath::Lerp(CurrentYaw, InitialYaw, DeltaTime * 1.25f);		// Set animated of actor	
 	
 	FRotator DoorRotation = GetOwner()->GetActorRotation();		// Create and set FRotator with Actor
 	DoorRotation.Yaw = CurrentYaw;		// Set FRotation Yaw of Current Yaw
