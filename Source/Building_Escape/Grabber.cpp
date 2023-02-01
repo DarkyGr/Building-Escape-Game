@@ -14,8 +14,6 @@ UGrabber::UGrabber()
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
-
-	// ...
 }
 
 
@@ -24,9 +22,15 @@ void UGrabber::BeginPlay()
 {
 	Super::BeginPlay();
 
+	FindPhysicsHandle();	// Function for find physics
+	SetInputComponent();	// Function for set input component	
+}
+
+// Function for find physics
+void UGrabber::FindPhysicsHandle()
+{
 	// Checking for Physics Handle Component
 	PhysicsHandle = GetOwner()->FindComponentByClass<UPhysicsHandleComponent>();
-
 	if (PhysicsHandle)
 	{		
 		//Physics is found
@@ -34,9 +38,13 @@ void UGrabber::BeginPlay()
 	else
 	{
 		//Physics isn't found
-		UE_LOG(LogTemp, Error, TEXT("No physicns handle component found on: %s!"), *GetOwner()->GetName());
+		UE_LOG(LogTemp, Error, TEXT("No physics handle component found on: %s!"), *GetOwner()->GetName());
 	}
+}
 
+// Function for set input component
+void UGrabber::SetInputComponent()
+{
 	// Checking the input of the player (Keyboard or mouse)
 	InputComponent = GetOwner()->FindComponentByClass<UInputComponent>();
 	if (InputComponent)
@@ -49,11 +57,25 @@ void UGrabber::BeginPlay()
 	{
 		UE_LOG(LogTemp, Error, TEXT("Input component MISSING!"));
 	}
-	
-	
-	
-	
-	
+}
+
+// Function for Mesg of Grab
+void UGrabber::Grab()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Grabber Pressed"));
+
+	// Try an reach any actors with physics body collision channel set
+
+	// If we hit something then attach the physics handle
+	// TODO attach physics handle
+}
+
+// Function for Mesg of Released
+void UGrabber::Release()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Grabber Released..."));
+
+	// TODO remove/release the physics handle
 }
 
 
@@ -105,20 +127,7 @@ void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 	if (ActorHit)
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Line trace has hit: %s"), *(ActorHit->GetName()));
-	}
-	
+	}	
 
 	// Logging out to test
-
 }
-
-void UGrabber::Grab()
-{
-	UE_LOG(LogTemp, Warning, TEXT("Grabber Pressed"));
-}
-
-void UGrabber::Release()
-{
-	UE_LOG(LogTemp, Warning, TEXT("Grabber Released..."));
-}
-
