@@ -33,8 +33,25 @@ void UGrabber::BeginPlay()
 	}
 	else
 	{
+		//Physics isn't found
 		UE_LOG(LogTemp, Error, TEXT("No physicns handle component found on: %s!"), *GetOwner()->GetName());
 	}
+
+	// Checking the input of the player (Keyboard or mouse)
+	InputComponent = GetOwner()->FindComponentByClass<UInputComponent>();
+	if (InputComponent)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("Input component found: %s!"), *GetOwner()->GetName());
+		InputComponent->BindAction("Grab", IE_Pressed, this, &UGrabber::Grab);		// Bind an action
+
+
+	}
+	// else
+	// {
+	// 	UE_LOG(LogTemp, Error, TEXT("Input component MISSING!"));
+	// }
+	
+	
 	
 	
 	
@@ -94,5 +111,10 @@ void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 
 	// Logging out to test
 
+}
+
+void UGrabber::Grab()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Grabber Press"));
 }
 

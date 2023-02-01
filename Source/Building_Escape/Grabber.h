@@ -29,5 +29,8 @@ private:
 	float Reach = 90.f;
 
 	UPhysicsHandleComponent* PhysicsHandle = nullptr;	// Null pointer = nullptr
+	UInputComponent* InputComponent = nullptr;
+
+	void Grab();
 		
 };
