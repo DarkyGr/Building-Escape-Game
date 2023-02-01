@@ -64,7 +64,7 @@ void UGrabber::Grab()
 {
 	UE_LOG(LogTemp, Warning, TEXT("Grabber Pressed"));
 
-	// Try an reach any actors with physics body collision channel set
+	// TODO, to only raycast when key is pressed and see if we reach any actors with physics body collision channel set
 
 	// If we hit something then attach the physics handle
 	// TODO attach physics handle
@@ -84,6 +84,16 @@ void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
+	// If the physic handel is attach
+	// Move the onject we are holding
+
+	GetFirstPhysicsBodyInReach();	// Function for detected collision when is reach (1 time)
+}
+
+
+// Function for detected collision when is reach (1 time)
+FHitResult UGrabber::GetFirstPhysicsBodyInReach() const
+{
 	// Get players viewpoint
 	FVector PlayerViewPointLocation;
 	FRotator PlayerViewPointRotation;
@@ -94,22 +104,11 @@ void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 		OUT PlayerViewPointRotation
 	);
 
-	// Draw a line fromm player showing the reach
+	// Draw a line from player showing the reach
 	FVector LineTraceEnd = PlayerViewPointLocation + PlayerViewPointRotation.Vector() * Reach;
 
-	// Draw one line from player
-	DrawDebugLine(
-		GetWorld(),		//World
-		PlayerViewPointLocation,
-		LineTraceEnd,
-		FColor(0, 255, 0),		//Color line
-		false,
-		0.f,
-		0,
-		5.f		//pixels
-	);
-
 	FHitResult Hit;
+	
 	//Ray-cast out to a certain distance (Reach)
 	FCollisionQueryParams TraceParams(FName(TEXT("")), false, GetOwner());
 
@@ -129,5 +128,5 @@ void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 		UE_LOG(LogTemp, Warning, TEXT("Line trace has hit: %s"), *(ActorHit->GetName()));
 	}	
 
-	// Logging out to test
+	return Hit;
 }

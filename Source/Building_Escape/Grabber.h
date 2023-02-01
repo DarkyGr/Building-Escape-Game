@@ -32,5 +32,8 @@ private:
 	void Grab();
 	void Release();
 	void FindPhysicsHandle();
-	void SetInputComponent();
+	void SetInputComponent();	
+
+	//Return the fisrt Actor within reach with physics body
+	FHitResult GetFirstPhysicsBodyInReach() const;
 };
