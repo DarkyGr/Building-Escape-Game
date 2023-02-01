@@ -43,13 +43,12 @@ void UGrabber::BeginPlay()
 	{
 		UE_LOG(LogTemp, Warning, TEXT("Input component found: %s!"), *GetOwner()->GetName());
 		InputComponent->BindAction("Grab", IE_Pressed, this, &UGrabber::Grab);		// Bind an action
-
-
+		InputComponent->BindAction("Grab", IE_Released, this, &UGrabber::Release);		// Bind an action
 	}
-	// else
-	// {
-	// 	UE_LOG(LogTemp, Error, TEXT("Input component MISSING!"));
-	// }
+	else
+	{
+		UE_LOG(LogTemp, Error, TEXT("Input component MISSING!"));
+	}
 	
 	
 	
@@ -115,6 +114,11 @@ void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 
 void UGrabber::Grab()
 {
-	UE_LOG(LogTemp, Warning, TEXT("Grabber Press"));
+	UE_LOG(LogTemp, Warning, TEXT("Grabber Pressed"));
+}
+
+void UGrabber::Release()
+{
+	UE_LOG(LogTemp, Warning, TEXT("Grabber Released..."));
 }
 
