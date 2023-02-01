@@ -64,7 +64,7 @@ void UGrabber::Grab()
 {
 	UE_LOG(LogTemp, Warning, TEXT("Grabber Pressed"));
 
-	// TODO, to only raycast when key is pressed and see if we reach any actors with physics body collision channel set
+	GetFirstPhysicsBodyInReach();	// Function for detected collision when is reach (1 time)
 
 	// If we hit something then attach the physics handle
 	// TODO attach physics handle
@@ -85,9 +85,7 @@ void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
 	// If the physic handel is attach
-	// Move the onject we are holding
-
-	GetFirstPhysicsBodyInReach();	// Function for detected collision when is reach (1 time)
+	// Move the onject we are holding	
 }
 
 
