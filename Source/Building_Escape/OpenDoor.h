@@ -58,10 +58,10 @@ private:
 
 	// Set property for edit on UE the Trigger Volume
 	UPROPERTY(EditAnywhere)
-	ATriggerVolume* PressurePlate;
+	ATriggerVolume* PressurePlate = nullptr;
 
 	// Set property for edit on UE the Trigger Volume
-	UPROPERTY(EditAnywhere)
-	AActor* ActorThatOpens;
+	// UPROPERTY(EditAnywhere)
+	// AActor* ActorThatOpens;
 		
 };

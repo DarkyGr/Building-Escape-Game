@@ -33,7 +33,7 @@ void UOpenDoor::BeginPlay()
 	}
 
 	// Search in the world for the first pawn Player
-	ActorThatOpens = GetWorld()->GetFirstPlayerController()->GetPawn();	
+	// ActorThatOpens = GetWorld()->GetFirstPlayerController()->GetPawn();	
 }
 
 // Called every frame
@@ -88,6 +88,7 @@ float UOpenDoor::TotalMassOfActors() const
 
 	// Find all overlapping actors
 	TArray<AActor*> OverlappingActors;
+	if (!PressurePlate){return TotalMass;}
 	PressurePlate->GetOverlappingActors(OUT OverlappingActors);
 	// UE_LOG(LogTemp, Warning, TEXT("%i Actors!"), OverlappingActors.Num());
 

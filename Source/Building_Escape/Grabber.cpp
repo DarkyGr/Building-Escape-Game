@@ -47,7 +47,7 @@ void UGrabber::FindPhysicsHandle()
 {
 	// Checking for Physics Handle Component
 	PhysicsHandle = GetOwner()->FindComponentByClass<UPhysicsHandleComponent>();
-	if (PhysicsHandle == nullptr)
+	if (!PhysicsHandle)
 	{		
 		//Physics isn't found
 		UE_LOG(LogTemp, Error, TEXT("No physics handle component found on: %s!"), *GetOwner()->GetName());
@@ -60,11 +60,13 @@ void UGrabber::Grab()
 	// UE_LOG(LogTemp, Warning, TEXT("Grabber Pressed"));	
 
 	FHitResult HitResult = GetFirstPhysicsBodyInReach();	// Function for detected collision when is reach (1 time)
-	UPrimitiveComponent* ComponentToGrab = HitResult.GetComponent();
+	AActor* ActorHitResult = HitResult.GetActor();			// Save the Hit Result on Actor pointer
+	UPrimitiveComponent* ComponentToGrab = HitResult.GetComponent();	//Create varibale for the component of Hit Result	
 
 	// If we hit something then attach the physics handle
-	if (HitResult.GetActor())	//Check Actor (Pointer)
+	if (ActorHitResult)	//Check Actor (Pointer)
 	{
+		if (!PhysicsHandle){return;}
 		// TODO attach physics handle
 		PhysicsHandle->GrabComponentAtLocation(
 			ComponentToGrab,
@@ -79,6 +81,7 @@ void UGrabber::Release()
 {
 	// UE_LOG(LogTemp, Warning, TEXT("Grabber Released..."));
 
+	if (!PhysicsHandle){return;}
 	// TODO remove/release the physics handle
 	PhysicsHandle->ReleaseComponent();
 }
@@ -89,6 +92,7 @@ void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
 	// If the physic handel is attach
+	if (!PhysicsHandle){return;}
 	if (PhysicsHandle->GrabbedComponent)
 	{
 		// Move the onject we are holding
@@ -99,8 +103,7 @@ void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 // Function for detected collision when is reach (1 time)
 FHitResult UGrabber::GetFirstPhysicsBodyInReach() const
 {
-	FHitResult Hit;
-	
+	FHitResult Hit;	
 	//Ray-cast out to a certain distance (Reach)
 	FCollisionQueryParams TraceParams(FName(TEXT("")), false, GetOwner());
 
