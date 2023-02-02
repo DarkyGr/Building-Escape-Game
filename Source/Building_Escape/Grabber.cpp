@@ -98,6 +98,7 @@ void UGrabber::Release()
 	UE_LOG(LogTemp, Warning, TEXT("Grabber Released..."));
 
 	// TODO remove/release the physics handle
+	PhysicsHandle->ReleaseComponent();
 }
 
 
