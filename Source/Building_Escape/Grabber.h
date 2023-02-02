@@ -43,6 +43,9 @@ private:
 	//Return the fisrt Actor within reach with physics body
 	FHitResult GetFirstPhysicsBodyInReach() const;
 
+	//Return the Line Trace End
 	FVector GetGrabLocation() const;
+	
+	//Return the Player View Point
 	FPlayerViewPoint GetPlayerViewPoint() const;
 };
