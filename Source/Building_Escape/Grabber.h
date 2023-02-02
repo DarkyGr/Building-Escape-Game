@@ -7,6 +7,12 @@
 #include "PhysicsEngine/PhysicsHandleComponent.h"
 #include "Grabber.generated.h"
 
+//Add new Struct
+struct FPlayerViewPoint
+{
+    FVector Location;    
+	FRotator Rotation;
+};
 
 UCLASS( ClassGroup=(Custom), meta=(BlueprintSpawnableComponent) )
 class BUILDING_ESCAPE_API UGrabber : public UActorComponent
@@ -36,4 +42,7 @@ private:
 
 	//Return the fisrt Actor within reach with physics body
 	FHitResult GetFirstPhysicsBodyInReach() const;
+
+	FVector GetGrabLocation() const;
+	FPlayerViewPoint GetPlayerViewPoint() const;
 };

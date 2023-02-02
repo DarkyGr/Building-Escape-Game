@@ -64,18 +64,7 @@ void UGrabber::Grab()
 {
 	UE_LOG(LogTemp, Warning, TEXT("Grabber Pressed"));
 
-	// Get players viewpoint
-	FVector PlayerViewPointLocation;
-	FRotator PlayerViewPointRotation;
-
-		// Get the player view point and set on the varibales
-	GetWorld()->GetFirstPlayerController()->GetPlayerViewPoint(
-		OUT PlayerViewPointLocation, 
-		OUT PlayerViewPointRotation
-	);
-
-	// Draw a line from player showing the reach
-	FVector LineTraceEnd = PlayerViewPointLocation + PlayerViewPointRotation.Vector() * Reach;
+	FVector GrabLocation = GetGrabLocation();	// Function for calcule the position and transform, to return FVector
 
 	FHitResult HitResult = GetFirstPhysicsBodyInReach();	// Function for detected collision when is reach (1 time)
 	UPrimitiveComponent* ComponentToGrab = HitResult.GetComponent();
@@ -87,7 +76,7 @@ void UGrabber::Grab()
 		PhysicsHandle->GrabComponentAtLocation(
 			ComponentToGrab,
 			NAME_None,
-			LineTraceEnd
+			GrabLocation
 		);
 	}	
 }
@@ -107,24 +96,13 @@ void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
-	// Get players viewpoint
-	FVector PlayerViewPointLocation;
-	FRotator PlayerViewPointRotation;
-
-		// Get the player view point and set on the varibales
-	GetWorld()->GetFirstPlayerController()->GetPlayerViewPoint(
-		OUT PlayerViewPointLocation, 
-		OUT PlayerViewPointRotation
-	);
-
-	// Draw a line from player showing the reach
-	FVector LineTraceEnd = PlayerViewPointLocation + PlayerViewPointRotation.Vector() * Reach;
+	FVector GrabLocation = GetGrabLocation();	// Function for calcule the position and transform, to return FVector
 
 	// If the physic handel is attach
 	if (PhysicsHandle->GrabbedComponent)
 	{
 		// Move the onject we are holding
-		PhysicsHandle->SetTargetLocation(LineTraceEnd);
+		PhysicsHandle->SetTargetLocation(GrabLocation);
 	}		
 }
 
@@ -132,18 +110,7 @@ void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 // Function for detected collision when is reach (1 time)
 FHitResult UGrabber::GetFirstPhysicsBodyInReach() const
 {
-	// Get players viewpoint
-	FVector PlayerViewPointLocation;
-	FRotator PlayerViewPointRotation;
-
-		// Get the player view point and set on the varibales
-	GetWorld()->GetFirstPlayerController()->GetPlayerViewPoint(
-		OUT PlayerViewPointLocation, 
-		OUT PlayerViewPointRotation
-	);
-
-	// Draw a line from player showing the reach
-	FVector LineTraceEnd = PlayerViewPointLocation + PlayerViewPointRotation.Vector() * Reach;
+	FVector GrabLocation = GetGrabLocation();	// Function for calcule the position and transform, to return FVector	
 
 	FHitResult Hit;
 	
@@ -152,8 +119,8 @@ FHitResult UGrabber::GetFirstPhysicsBodyInReach() const
 
 	GetWorld()->LineTraceSingleByObjectType(
 		OUT Hit,
-		PlayerViewPointLocation,
-		LineTraceEnd,
+		GetPlayerViewPoint().Location,
+		GrabLocation,
 		FCollisionObjectQueryParams(ECollisionChannel::ECC_PhysicsBody),	// Body Collision
 		TraceParams
 	);	
@@ -167,4 +134,28 @@ FHitResult UGrabber::GetFirstPhysicsBodyInReach() const
 	}	
 
 	return Hit;
+}
+
+// Function for calcule the position and transform, to return FVector
+FVector UGrabber::GetGrabLocation() const
+{
+	FPlayerViewPoint NewPlayerPointView = GetPlayerViewPoint();
+
+	// Draw a line from player showing the reach
+	FVector LineTraceEnd = NewPlayerPointView.Location + NewPlayerPointView.Rotation.Vector() * Reach;
+
+	return LineTraceEnd;
+}
+
+// Function for set parameters in the new struct
+FPlayerViewPoint UGrabber::GetPlayerViewPoint() const
+{
+	FPlayerViewPoint PlayerPointView;
+
+	GetWorld()->GetFirstPlayerController()->GetPlayerViewPoint(
+		OUT PlayerPointView.Location, 
+		OUT PlayerPointView.Rotation
+	);
+
+	return PlayerPointView;
 }
