@@ -1,10 +1,12 @@
 // Copyright DarkyGr 2023
 
 #include "OpenDoor.h"
+#include "Components/PrimitiveComponent.h"
 #include "Engine/World.h"
 #include "GameFramework/Actor.h"
 #include "GameFramework/PlayerController.h"
 
+#define OUT
 
 // Sets default values for this component's properties
 UOpenDoor::UOpenDoor()
@@ -12,10 +14,7 @@ UOpenDoor::UOpenDoor()
 	// Set this component to be initialized when the game starts, and to be ticked every frame.  You can turn these features
 	// off to improve performance if you don't need them.
 	PrimaryComponentTick.bCanEverTick = true;
-
-	// ...
 }
-
 
 // Called when the game starts
 void UOpenDoor::BeginPlay()
@@ -34,10 +33,8 @@ void UOpenDoor::BeginPlay()
 	}
 
 	// Search in the world for the first pawn Player
-	ActorThatOpens = GetWorld()->GetFirstPlayerController()->GetPawn();
-	
+	ActorThatOpens = GetWorld()->GetFirstPlayerController()->GetPawn();	
 }
-
 
 // Called every frame
 void UOpenDoor::TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)
@@ -45,7 +42,7 @@ void UOpenDoor::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompon
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
 	// Check if the actor is stepping on the pressure plate	
-	if(PressurePlate && PressurePlate->IsOverlappingActor(ActorThatOpens)){
+	if(TotalMassOfActors() >= MassToOpenDoors){
 		OpendDoor(DeltaTime);
 		DoorLastOpened = GetWorld()->GetTimeSeconds();
 	}
@@ -74,7 +71,6 @@ void UOpenDoor::OpendDoor(float DeltaTime)
 	GetOwner()->SetActorRotation(DoorRotation);		// Set Rotation
 }
 
-
 // Function for Close Door
 void UOpenDoor::CloseDoor(float DeltaTime)
 {
@@ -83,4 +79,25 @@ void UOpenDoor::CloseDoor(float DeltaTime)
 	FRotator DoorRotation = GetOwner()->GetActorRotation();		// Create and set FRotator with Actor
 	DoorRotation.Yaw = CurrentYaw;		// Set FRotation Yaw of Current Yaw
 	GetOwner()->SetActorRotation(DoorRotation);		// Set Rotation
+}
+
+// Fucntion for return the total mass of the objects
+float UOpenDoor::TotalMassOfActors() const
+{
+	float TotalMass = 0.f;
+
+	// Find all overlapping actors
+	TArray<AActor*> OverlappingActors;
+	PressurePlate->GetOverlappingActors(OUT OverlappingActors);
+	// UE_LOG(LogTemp, Warning, TEXT("%i Actors!"), OverlappingActors.Num());
+
+	// Add up their masses
+	for (AActor* Actor : OverlappingActors)
+	{
+		TotalMass += Actor->FindComponentByClass<UPrimitiveComponent>()->GetMass();
+		// UE_LOG(LogTemp, Warning, TEXT("%s is on the pressure plate!"), *Actor->GetName());
+	}
+	
+
+	return TotalMass;
 }

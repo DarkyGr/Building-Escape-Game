@@ -25,15 +25,20 @@ public:
 	// Called every frame
 	virtual void TickComponent(float DeltaTime, ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction) override;
 
-	public:
+	//Variables
 	void OpendDoor(float DeltaTime);
 	void CloseDoor(float DeltaTime);
+	float TotalMassOfActors() const;
 
-	private:	
+private:	
 	float CurrentYaw;
 	float InitialYaw;
 	FRotator OpenDoor;
 	float DoorLastOpened = 0.f;	
+
+	// Set property for edit on UE the Target Yaw
+	UPROPERTY(EditAnywhere)
+	float MassToOpenDoors = 50.f;
 
 	// Set property for edit on UE the Target Yaw
 	UPROPERTY(EditAnywhere)
