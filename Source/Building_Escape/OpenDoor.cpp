@@ -42,7 +42,7 @@ void UOpenDoor::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompon
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
 	// Check if the actor is stepping on the pressure plate	
-	if(TotalMassOfActors() >= MassToOpenDoors){
+	if(TotalMassOfActors() > MassToOpenDoors){
 		OpendDoor(DeltaTime);
 		DoorLastOpened = GetWorld()->GetTimeSeconds();
 	}
@@ -97,7 +97,6 @@ float UOpenDoor::TotalMassOfActors() const
 		TotalMass += Actor->FindComponentByClass<UPrimitiveComponent>()->GetMass();
 		// UE_LOG(LogTemp, Warning, TEXT("%s is on the pressure plate!"), *Actor->GetName());
 	}
-	
 
 	return TotalMass;
 }
