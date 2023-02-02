@@ -1,10 +1,10 @@
 // Copyright DarkyGr 2023
 
+#include "Grabber.h"
+#include "CollisionQueryParams.h"
+#include "DrawDebugHelpers.h"
 #include "Engine/World.h"
 #include "GameFramework/PlayerController.h"
-#include "DrawDebugHelpers.h"
-#include "CollisionQueryParams.h"
-#include "Grabber.h"
 
 #define OUT 
 
@@ -64,10 +64,32 @@ void UGrabber::Grab()
 {
 	UE_LOG(LogTemp, Warning, TEXT("Grabber Pressed"));
 
-	GetFirstPhysicsBodyInReach();	// Function for detected collision when is reach (1 time)
+	// Get players viewpoint
+	FVector PlayerViewPointLocation;
+	FRotator PlayerViewPointRotation;
+
+		// Get the player view point and set on the varibales
+	GetWorld()->GetFirstPlayerController()->GetPlayerViewPoint(
+		OUT PlayerViewPointLocation, 
+		OUT PlayerViewPointRotation
+	);
+
+	// Draw a line from player showing the reach
+	FVector LineTraceEnd = PlayerViewPointLocation + PlayerViewPointRotation.Vector() * Reach;
+
+	FHitResult HitResult = GetFirstPhysicsBodyInReach();	// Function for detected collision when is reach (1 time)
+	UPrimitiveComponent* ComponentToGrab = HitResult.GetComponent();
 
 	// If we hit something then attach the physics handle
-	// TODO attach physics handle
+	if (HitResult.GetActor())	//Check Actor (Pointer)
+	{
+		// TODO attach physics handle
+		PhysicsHandle->GrabComponentAtLocation(
+			ComponentToGrab,
+			NAME_None,
+			LineTraceEnd
+		);
+	}	
 }
 
 // Function for Mesg of Released
@@ -84,8 +106,25 @@ void UGrabber::TickComponent(float DeltaTime, ELevelTick TickType, FActorCompone
 {
 	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
 
+	// Get players viewpoint
+	FVector PlayerViewPointLocation;
+	FRotator PlayerViewPointRotation;
+
+		// Get the player view point and set on the varibales
+	GetWorld()->GetFirstPlayerController()->GetPlayerViewPoint(
+		OUT PlayerViewPointLocation, 
+		OUT PlayerViewPointRotation
+	);
+
+	// Draw a line from player showing the reach
+	FVector LineTraceEnd = PlayerViewPointLocation + PlayerViewPointRotation.Vector() * Reach;
+
 	// If the physic handel is attach
-	// Move the onject we are holding	
+	if (PhysicsHandle->GrabbedComponent)
+	{
+		// Move the onject we are holding
+		PhysicsHandle->SetTargetLocation(LineTraceEnd);
+	}		
 }
 
 
