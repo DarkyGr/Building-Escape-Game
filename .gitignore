@@ -84,3 +84,6 @@ Content/StarterContent/*
 /.vscode/*
 BuildingEscape.code-workspace
 
+# Assests
+Content/ModularBuildingSet/*
+
