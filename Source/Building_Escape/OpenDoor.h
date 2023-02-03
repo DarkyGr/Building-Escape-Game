@@ -29,12 +29,16 @@ public:
 	void OpendDoor(float DeltaTime);
 	void CloseDoor(float DeltaTime);
 	float TotalMassOfActors() const;
+	void FindAudioComponent();
 
 private:	
 	float CurrentYaw;
 	float InitialYaw;
 	FRotator OpenDoor;
 	float DoorLastOpened = 0.f;	
+
+	UPROPERTY()
+	UAudioComponent* AudioComponent = nullptr;
 
 	// Set property for edit on UE the Target Yaw
 	UPROPERTY(EditAnywhere)

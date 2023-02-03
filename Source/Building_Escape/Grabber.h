@@ -32,7 +32,9 @@ protected:
 private:
 	float Reach = 100.f;
 
+	UPROPERTY()
 	UPhysicsHandleComponent* PhysicsHandle = nullptr;	// Null pointer = nullptr
+	UPROPERTY()
 	UInputComponent* InputComponent = nullptr;
 	
 	void Grab();

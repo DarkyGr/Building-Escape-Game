@@ -1,6 +1,7 @@
 // Copyright DarkyGr 2023
 
 #include "OpenDoor.h"
+#include "Components/AudioComponent.h"
 #include "Components/PrimitiveComponent.h"
 #include "Engine/World.h"
 #include "GameFramework/Actor.h"
@@ -34,6 +35,20 @@ void UOpenDoor::BeginPlay()
 
 	// Search in the world for the first pawn Player
 	// ActorThatOpens = GetWorld()->GetFirstPlayerController()->GetPawn();	
+
+	
+	FindAudioComponent();
+}
+
+// Function for find the audio
+void UOpenDoor::FindAudioComponent()
+{
+	AudioComponent = GetOwner()->FindComponentByClass<UAudioComponent>();
+
+	if (!AudioComponent)
+	{
+		UE_LOG(LogTemp, Error, TEXT("%s Missing audio component!"), *GetOwner()->GetName());
+	}	
 }
 
 // Called every frame
@@ -69,6 +84,8 @@ void UOpenDoor::OpendDoor(float DeltaTime)
 	FRotator DoorRotation = GetOwner()->GetActorRotation();		// Create and set FRotator with Actor
 	DoorRotation.Yaw = CurrentYaw;		// Set FRotation Yaw of Current Yaw
 	GetOwner()->SetActorRotation(DoorRotation);		// Set Rotation
+
+	AudioComponent->Play();
 }
 
 // Function for Close Door
@@ -79,6 +96,8 @@ void UOpenDoor::CloseDoor(float DeltaTime)
 	FRotator DoorRotation = GetOwner()->GetActorRotation();		// Create and set FRotator with Actor
 	DoorRotation.Yaw = CurrentYaw;		// Set FRotation Yaw of Current Yaw
 	GetOwner()->SetActorRotation(DoorRotation);		// Set Rotation
+
+	AudioComponent->Play();
 }
 
 // Fucntion for return the total mass of the objects
