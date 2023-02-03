@@ -27,17 +27,11 @@ void UOpenDoor::BeginPlay()
 	CurrentYaw = InitialYaw;	// Set Current Yaw == Actor Yaw
 	OpenAngle += InitialYaw;	// Set 90 grades of Target
 
-	// Check if the pressure plate is not set
-	if (!PressurePlate)
-	{
-		UE_LOG(LogTemp, Error, TEXT("%s has open door component on it, but no pressure plate set!"), *GetOwner()->GetName())
-	}
+	FindPressurePlate();
+	FindAudioComponent();
 
 	// Search in the world for the first pawn Player
-	// ActorThatOpens = GetWorld()->GetFirstPlayerController()->GetPawn();	
-
-	
-	FindAudioComponent();
+	// ActorThatOpens = GetWorld()->GetFirstPlayerController()->GetPawn();
 }
 
 // Function for find the audio
@@ -49,6 +43,15 @@ void UOpenDoor::FindAudioComponent()
 	{
 		UE_LOG(LogTemp, Error, TEXT("%s Missing audio component!"), *GetOwner()->GetName());
 	}	
+}
+
+void UOpenDoor::FindPressurePlate()
+{
+	// Check if the pressure plate is not set
+	if (!PressurePlate)
+	{
+		UE_LOG(LogTemp, Error, TEXT("%s has open door component on it, but no pressure plate set!"), *GetOwner()->GetName())
+	}
 }
 
 // Called every frame
@@ -85,7 +88,14 @@ void UOpenDoor::OpendDoor(float DeltaTime)
 	DoorRotation.Yaw = CurrentYaw;		// Set FRotation Yaw of Current Yaw
 	GetOwner()->SetActorRotation(DoorRotation);		// Set Rotation
 
-	AudioComponent->Play();
+	// Checking and play Open Door Sound
+	CloseDoorSound = false;
+	if (!AudioComponent){return;}	
+	if (!OpenDoorSound)
+	{
+		AudioComponent->Play();
+		OpenDoorSound = true;		
+	}	
 }
 
 // Function for Close Door
@@ -97,7 +107,14 @@ void UOpenDoor::CloseDoor(float DeltaTime)
 	DoorRotation.Yaw = CurrentYaw;		// Set FRotation Yaw of Current Yaw
 	GetOwner()->SetActorRotation(DoorRotation);		// Set Rotation
 
-	AudioComponent->Play();
+	// Checking and play Open Door Sound
+	OpenDoorSound = false;
+	if (!AudioComponent){return;}	
+	if (!CloseDoorSound)
+	{
+		AudioComponent->Play();
+		CloseDoorSound = true;		
+	}	
 }
 
 // Fucntion for return the total mass of the objects

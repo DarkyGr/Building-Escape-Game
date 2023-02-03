@@ -30,6 +30,11 @@ public:
 	void CloseDoor(float DeltaTime);
 	float TotalMassOfActors() const;
 	void FindAudioComponent();
+	void FindPressurePlate();
+
+	// Tracks whether
+	bool OpenDoorSound = false;
+	bool CloseDoorSound = true;
 
 private:	
 	float CurrentYaw;
